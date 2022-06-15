@@ -7,8 +7,8 @@ import Goblin from './Goblin';
 function App() {
   const [goblinFormName, setGoblinFormName] = useState('');
   const [goblinFormHP, setGoblinFormHP] = useState('');
-  const [goblinFormColor, setGoblinFormColor] = useState('');
-  const [visibleGoblins, setVisibleGoblins] = useState('');
+  const [goblinFormColor, setGoblinFormColor] = useState('lightgreen');
+  const [visibleGoblins, setVisibleGoblins] = useState([]);
   const [allGoblins, setAllGoblins] = useState([]);
   
   function submitGoblin(e) {
@@ -23,18 +23,18 @@ function App() {
     setAllGoblins([...allGoblins, goblin]);
     setGoblinFormName('');
     setGoblinFormHP('');
-    setGoblinFormColor('lightgreen');
+    setGoblinFormColor('');
   }
 
   function handleDeleteGoblin(name) {
     const goblinIndex = allGoblins.findIndex((goblin) => goblin.name === name);
     allGoblins.splice(goblinIndex, 1);
-    setVisibleGoblins([...allGoblins]);
+    setAllGoblins([...allGoblins]);
   }
 
-  function handleFilterGoblins(search) {
-    const searchGoblins = allGoblins.filter((goblin) => goblin.name.includes(search));
-    search ? setVisibleGoblins(searchGoblins) : setVisibleGoblins(allGoblins);
+  function handleFilterGoblins(filterString) {
+    const updateGoblins = allGoblins.filter((goblin) => goblin.name.toLowerCase().includes(filterString.toLowerCase()));
+    filterString ? setVisibleGoblins(updateGoblins) : setVisibleGoblins(allGoblins);
   }
 
   return (
@@ -60,7 +60,7 @@ function App() {
         setGoblinFormHP={setGoblinFormHP}
       />
       <GoblinList 
-        goblins={allGoblins} // this takes in an array of goblins. If the filteredGoblins has a length, use that array. Otherwise, use the allGoblins array 
+        goblins={visibleGoblins.length ? visibleGoblins : allGoblins} // this takes in an array of goblins. If the filteredGoblins has a length, use that array. Otherwise, use the allGoblins array 
         handleDeleteGoblin={handleDeleteGoblin} // note that the goblin list has access to the ability to delete
       />
     </div>
