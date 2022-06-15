@@ -1,9 +1,21 @@
+import { useState } from 'react';
 import './App.css';
 import GoblinForm from './GoblinForm';
 import GoblinList from './GoblinList';
 import Goblin from './Goblin';
 
 function App() {
+  const [goblinFormName, setGoblinFormName] = useState('');
+  const [goblinFormHP, setGoblinFormHP] = useState('');
+  const [goblinFormColor, setGoblinFormColor] = useState('');
+  const [visibleGoblins, setVisibleGoblins] = useState([]);
+  const [allGoblins, setAllGoblins] = useState([
+    {
+      goblinFormName: 'Hoblin',
+      goblinFormHP: '6',
+      goblinFormColor: 'Orange'
+    },
+  ]);
   /* 
     track: 
       allGoblins, an array of all goblins
@@ -14,7 +26,17 @@ function App() {
 */
   
   function submitGoblin(e) {
-    e.preventDefault()
+    e.preventDefault();
+
+    const goblin = {
+      goblinFormName: goblinFormName,
+      goblinFormHP: goblinFormHP,
+      goblinFormColor: goblinFormColor,
+    };
+
+    const updateGoblins = [...allGoblins, goblin];
+
+    setAllGoblins(updateGoblins);
     
     // on submit, make a new goblin object with a name that comes from the form state, an hp that comes from the form state, and a color that comes from the form state
 
