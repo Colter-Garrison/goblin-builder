@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import GoblinForm from './GoblinForm';
 import GoblinList from './GoblinList';
@@ -10,7 +10,13 @@ function App() {
   const [goblinFormColor, setGoblinFormColor] = useState('lightgreen');
   const [visibleGoblins, setVisibleGoblins] = useState([]);
   const [allGoblins, setAllGoblins] = useState([]);
+  const [filterString, setFilterString] = useState('');
   
+  useEffect(() => {
+    setVisibleGoblins(allGoblins);
+    setFilterString('');
+  }, [allGoblins]);
+
   function submitGoblin(e) {
     e.preventDefault();
 
@@ -23,18 +29,20 @@ function App() {
     setAllGoblins([...allGoblins, goblin]);
     setGoblinFormName('');
     setGoblinFormHP('');
-    setGoblinFormColor('');
+    setGoblinFormColor('lightgreen');
   }
 
   function handleDeleteGoblin(name) {
     const goblinIndex = allGoblins.findIndex((goblin) => goblin.name === name);
     allGoblins.splice(goblinIndex, 1);
-    setAllGoblins([...allGoblins]);
+    setVisibleGoblins([...allGoblins]);
   }
 
   function handleFilterGoblins(filterString) {
+    setFilterString(filterString);
     const updateGoblins = allGoblins.filter((goblin) => goblin.name.toLowerCase().includes(filterString.toLowerCase()));
     filterString ? setVisibleGoblins(updateGoblins) : setVisibleGoblins(allGoblins);
+    
   }
 
   return (
@@ -48,7 +56,7 @@ function App() {
       </div>
       <div className='goblin-filter quarter'>
         Filter Goblins
-        <input onChange={(e) => handleFilterGoblins(e.target.value)} />
+        <input value={filterString} onChange={(e) => handleFilterGoblins(e.target.value)} />
       </div>
       <GoblinForm 
         submitGoblin={submitGoblin}
