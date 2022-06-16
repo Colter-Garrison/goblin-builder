@@ -6,13 +6,17 @@ body, html, #root {
   height: 100%;
 }
 
-body {
+#root {
   background-image: url(./corridor.jpeg);
+  height: 100%;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .App {
   width: 70%;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.614);
   display: grid;
   grid-template-columns: 1fr 1fr;
   border: solid 1px black;
